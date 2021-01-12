@@ -21,7 +21,9 @@
 <v-text-field v-model="register.confirm_password" :rules="ConfirmPasswordRules" label="Confirm"></v-text-field>
 </v-col>
 
-<v-col cols="12"></v-col>
+<v-col cols="12">
+    <div class="g-recaptcha" data-sitekey="6LeZeykaAAAAAILTse8_kZa6-PSKvC7NFaZuOa7l"></div>
+</v-col>
 
 <v-col>
 <v-btn class="primary" to="/login" @click="registerUser">Continue</v-btn>
