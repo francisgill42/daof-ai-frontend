@@ -15,7 +15,7 @@ export default {
     ],
     script: [
       {
-        src: 'https://www.google.com/recaptcha/api.js'
+        src: 'https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit'
       }
     ],
     link: [
@@ -45,6 +45,8 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
   ],
+
+  
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},

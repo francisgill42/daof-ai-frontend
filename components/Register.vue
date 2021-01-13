@@ -22,11 +22,16 @@
 </v-col>
 
 <v-col cols="12">
-    <div class="g-recaptcha" data-sitekey="6LeZeykaAAAAAILTse8_kZa6-PSKvC7NFaZuOa7l"></div>
+  <vue-recaptcha 
+    sitekey="6LeZeykaAAAAAILTse8_kZa6-PSKvC7NFaZuOa7l"
+    @verify="mxVerify">
+    </vue-recaptcha>
+
 </v-col>
 
 <v-col>
-<v-btn class="primary" to="/login" @click="registerUser">Continue</v-btn>
+
+<v-btn class="primary"  @click="registerUser">Continue</v-btn>
 </v-col>
 </v-row>
 
@@ -34,15 +39,23 @@
 </div>
 
 </template>
+
+
 <script>
 
+import VueRecaptcha from 'vue-recaptcha';
+
+
 export default {
+
+components: { VueRecaptcha },
 
 
 data () {
 return {
 
     register : {
+
         name : '',
 
         email : '',
@@ -53,6 +66,8 @@ return {
 
         confirm_password : '',
     },
+
+    reCaptcha : null,
 
     e1: 0,
 
@@ -98,15 +113,25 @@ computed : {
         ]
     }
 },
-   
+
+
 methods: {
 
 
+mxVerify(res){
+    this.reCaptcha = res;
+},
 
 registerUser(){
-
-
-console.log(this.register);
+    
+    var payload = {
+        secret : '6LeZeykaAAAAAJhm12GLy4XpK3NdtE3HZRQ4hyPF',
+        response : this.reCaptcha
+    };
+    
+    this.$axios.post('https://www.google.com/recaptcha/api/siteverify',payload)
+        .then(res => console.log(res));
+    
 
 //if(this.$refs.form.validate()){}
 
