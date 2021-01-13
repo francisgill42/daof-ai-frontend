@@ -5,28 +5,25 @@
 <v-form ref="form" class="mt-3">
 
 <v-row>
+
 <v-col cols="12">
-<v-text-field v-model="register.name" :value="UpperCase.name" :rules="NameRules" label="Name (as per CNIC)"></v-text-field>
-</v-col>
-<v-col cols="6">
 <v-text-field v-model="register.email" :value="UpperCase.email" :rules="EmailRules" label="Email"></v-text-field>
 </v-col>
+
 <v-col cols="6">
-<v-text-field v-model="register.cell" :value="UpperCase.cell" :rules="CellRules" label="Cell"></v-text-field>
+<v-text-field type="password" v-model="register.password" :value="UpperCase.password" :rules="PasswordRules" label="Password"></v-text-field>
 </v-col>
+
 <v-col cols="6">
-<v-text-field v-model="register.password" :value="UpperCase.password" :rules="PasswordRules" label="Password"></v-text-field>
-</v-col>
-<v-col cols="6">
-<v-text-field v-model="register.confirm_password" :rules="ConfirmPasswordRules" label="Confirm"></v-text-field>
+<v-text-field type="password" v-model="register.confirm_password" :rules="ConfirmPasswordRules" label="Confirm"></v-text-field>
 </v-col>
 
 <v-col cols="12">
   <vue-recaptcha 
-    sitekey="6LeZeykaAAAAAILTse8_kZa6-PSKvC7NFaZuOa7l"
-    @verify="mxVerify">
+    :sitekey="sitekey"
+    @verify="mxVerify">    
     </vue-recaptcha>
-
+    <span v-show="showGRC" class="red--text" style="font-size: 13px;">This field is required </span>
 </v-col>
 
 <v-col>
@@ -54,7 +51,12 @@ components: { VueRecaptcha },
 data () {
 return {
 
+
+
+    sitekey : '6LeZeykaAAAAAILTse8_kZa6-PSKvC7NFaZuOa7l',
+
     register : {
+        
 
         name : '',
 
@@ -68,6 +70,7 @@ return {
     },
 
     reCaptcha : null,
+    showGRC : false,
 
     e1: 0,
 
@@ -97,6 +100,10 @@ return {
         v => !!v || 'This field is required',
         v => v == this.register.password || 'Password field does not matched',
     ],
+     grRules: [ 
+        v => !!v || 'This field is required' + v
+    ],
+    
 
 }
 
@@ -120,20 +127,18 @@ methods: {
 
 mxVerify(res){
     this.reCaptcha = res;
+    this.showGRC = this.reCaptcha ? false : true ;
 },
 
 registerUser(){
-    
-    var payload = {
-        secret : '6LeZeykaAAAAAJhm12GLy4XpK3NdtE3HZRQ4hyPF',
-        response : this.reCaptcha
-    };
-    
-    this.$axios.post('https://www.google.com/recaptcha/api/siteverify',payload)
-        .then(res => console.log(res));
-    
 
-//if(this.$refs.form.validate()){}
+    this.showGRC = this.reCaptcha ? false : true ;
+
+    if(this.$refs.form.validate() && this.reCaptcha){
+
+        console.log(this.reCaptcha);
+
+    }
 
 },  
 
