@@ -1,6 +1,6 @@
 <template>
 <div>
-<h2>Introduction</h2>
+<h2>Registration</h2>
    
 <v-form ref="form" class="mt-3">
 
@@ -15,20 +15,20 @@
 </v-col>
 
 <v-col cols="6">
-<v-text-field type="password" v-model="register.confirm_password" :rules="ConfirmPasswordRules" label="Confirm"></v-text-field>
+<v-text-field type="password" v-model="register.confirm_password" :value="UpperCase.confirm_password" :rules="ConfirmPasswordRules" label="Confirm"></v-text-field>
 </v-col>
 
 <v-col cols="12">
   <vue-recaptcha 
-    :sitekey="sitekey"
+    :sitekey="this.$secrets.sitekey"
     @verify="mxVerify">    
     </vue-recaptcha>
-    <span v-show="showGRC" class="red--text" style="font-size: 13px;">This field is required </span>
+    <span v-show="showGRC" style="color:#ff5252; font-size: 13px;">This field is required </span>
 </v-col>
 
 <v-col>
 
-<v-btn class="primary"  @click="registerUser">Continue</v-btn>
+<v-btn class="primary" @click="registerUser">Continue</v-btn>
 </v-col>
 </v-row>
 
@@ -51,12 +51,11 @@ components: { VueRecaptcha },
 data () {
 return {
 
-
-
-    sitekey : '6LeZeykaAAAAAILTse8_kZa6-PSKvC7NFaZuOa7l',
+    reCaptcha : null,
+    
+    showGRC : false,
 
     register : {
-        
 
         name : '',
 
@@ -68,9 +67,6 @@ return {
 
         confirm_password : '',
     },
-
-    reCaptcha : null,
-    showGRC : false,
 
     e1: 0,
 
@@ -98,10 +94,10 @@ return {
 
     ConfirmPasswordRules: [ 
         v => !!v || 'This field is required',
-        v => v == this.register.password || 'Password field does not matched',
+        v => v == this.register.password || 'Password field does not match',
     ],
      grRules: [ 
-        v => !!v || 'This field is required' + v
+        v => !!v || 'This field is required'
     ],
     
 
@@ -117,6 +113,7 @@ computed : {
             d.name = d.name.toUpperCase(),
             d.email = d.email.toUpperCase(),
             d.password = d.password.toUpperCase(),
+            d.confirm_password = d.confirm_password.toUpperCase()
         ]
     }
 },
@@ -136,7 +133,9 @@ registerUser(){
 
     if(this.$refs.form.validate() && this.reCaptcha){
 
-        console.log(this.reCaptcha);
+        localStorage.setItem('otp',this.$otp); 
+
+        this.$router.push('/otp');
 
     }
 
