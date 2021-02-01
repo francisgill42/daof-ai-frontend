@@ -39,7 +39,7 @@ data : () => ({
         v => !!v || 'This field is required'
     ],
     mins : 1,
-    secs : 6,
+    secs : 30,
     msg : '',
     expired_msg : '',
     showResendOTP : true,

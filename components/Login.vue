@@ -9,7 +9,7 @@
 <v-text-field v-model="login.email" :value="UpperCase.email" :rules="EmailRules" label="Email"></v-text-field>
 </v-col>
 <v-col cols="12">
-<v-text-field v-model="login.password" :value="UpperCase.password" :rules="PasswordRules" label="Password"></v-text-field>
+<v-text-field type="password" v-model="login.password" :value="UpperCase.password" :rules="PasswordRules" label="Password"></v-text-field>
 </v-col>
 
 <v-col cols="12">

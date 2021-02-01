@@ -6,17 +6,23 @@
 <v-layout wrap>
 
 <v-flex xs12 md6>
-<v-text-field class="red_class" v-model="fathername" :rules="GroupByRequired" label="Father Name" :value="Caps"></v-text-field>
+<v-text-field readonly="true" class="red_class" v-model="email" label="Email" :value="Caps"></v-text-field>
 </v-flex>
 
 <v-flex xs12 md6>
-<v-text-field class="red_class" v-model="mothername" :rules="GroupByRequired" label="Mother Maiden Name" :value="Caps"></v-text-field>
+<v-text-field class="red_class" v-model="name" :rules="GroupByRequired" label="Name" :value="Caps"></v-text-field>
+</v-flex>
+
+<v-flex xs12 md6>
+<v-text-field class="red_class" v-model="fathername" :rules="GroupByRequired" label="Father Name" :value="Caps"></v-text-field>
 </v-flex>
 
 <v-flex xs6 md6>
 <v-text-field class="red_class" @keyup="add_dash" v-model="cnic" :rules="cnicRules" :counter="15" label="CNIC" placeholder="XXXXX-XXXXXXX-X">
 </v-text-field>
 </v-flex>
+
+
 
 <v-flex xs6 md6> 
 <v-menu v-model="menu2" :close-on-content-click="false" max-width="290">
@@ -28,6 +34,29 @@
    :rules="GroupByRequired"
    placeholder="dd/mm/yyyy"
    label="CNIC Issue Date"
+   readonly
+   v-on="on"
+   ></v-text-field>
+   </template>
+
+<v-date-picker
+:max="today"
+v-model="date2"
+@change="menu2 = false"
+></v-date-picker>
+</v-menu>
+</v-flex>
+
+<v-flex xs6 md6> 
+<v-menu v-model="menu3" :close-on-content-click="false" max-width="290">
+   <template v-slot:activator="{ on }">
+   <v-text-field
+   style="font-size: 21px;"
+   :value="formatted_date2"
+   clearable
+   :rules="GroupByRequired"
+   placeholder="dd/mm/yyyy"
+   label="CNIC Expiry Date"
    readonly
    v-on="on"
    ></v-text-field>
@@ -87,6 +116,15 @@ v-model="date1"
     required
     item-text="CTY_FULLNAME" item-value="CTY_CITYCODE" single-line auto label="City (Place of Birth)"></v-autocomplete>
     </v-flex>
+
+   <v-flex md12>
+   <label class="mb-3">Gender </label>
+   <v-radio-group row v-model="gender" required :rules="GroupByRequired">
+   <v-radio name="male"  label="Male" value="male"></v-radio>
+   <v-radio name="femail"  label="Female" value="female"></v-radio>
+   </v-radio-group>
+
+   </v-flex>
    
     <v-flex xs12 md6>
     <v-autocomplete 
@@ -326,43 +364,37 @@ v-model="date1"
 
     <v-flex xs12>
     <v-radio-group v-model="zakat" @change="change_zk_options" :rules="GroupByRequired" row>
-    <label>Zakat Deduction: {{zakat}}</label> <label class="mx-2">(If No please attach affidavit CZ-50)</label>
+    <label>Zakat Deduction:</label> <label class="mx-2">(If No please attach affidavit CZ-50)</label>
     <v-radio class="mx-3"  label="No" value="no"></v-radio>
     <v-radio label="Yes" value="yes"></v-radio>
     </v-radio-group>
     </v-flex>
 
-        <div v-if="zakat == 'no'">
-      
-    
-    <v-radio-group @change="get_zi" v-model="zakat_options" :rules="GroupByRequired" row>
-    <v-flex xs12>
-    <v-radio  value="file" label="file"></v-radio>
+   <v-flex xs6 md6>
+   <v-text-field class="red_class" @keyup="add_dash" v-model="cnic" :rules="cnicRules" :counter="15" label="NTN" placeholder="XXXXX-XXXXXXX-X">
+   </v-text-field>
    </v-flex>
 
-  
-   
-
-    <v-flex xs12 class="z_radio">
-    <v-radio label="E-mail us at: info@hblasset.com" value="email"></v-radio>
-    </v-flex>
-    <v-flex xs12 class="z_radio">
-    <v-radio  label="Courier us at: 7th Floor, Emerald Tower, G-19, Block 5, Main Clifton Road, Clifton, Karachi" value="courier"></v-radio>
-    </v-flex>
+   <v-flex md12>
+    <label class="mb-3">Tax Status</label>
+    <v-radio-group row v-model="tax_status" required :rules="GroupByRequired">
+    <v-radio name="filer"  label="Filer" value="filer"></v-radio>
+    <v-radio name="non_filer"  label="Non-Filer" value="non_filer"></v-radio>
     </v-radio-group>
     
-
-    </div>
+    </v-flex>
+    
 
     <v-flex md12>
     <label class="mb-3">Are you resident / national of : </label>
-    <v-radio-group v-model="qq" required :rules="GroupByRequired">
+    <v-radio-group row v-model="qq" required :rules="GroupByRequired">
     <v-radio name="qq"  label="PAKISTAN ONLY" value="pk"></v-radio>
     <v-radio name="qq"  label="USA" value="us"></v-radio>
     <v-radio name="qq"  label="OTHER THAN USA & PAKISTAN" value="o"></v-radio>
     </v-radio-group>
-
+    
     </v-flex>
+    
     <v-flex xs12>
     <div v-if="err" style="color: #ff1744 !important;">{{err}}</div>
     <v-btn class="primary" :loading="loading" @click="submit">Continue</v-btn>
@@ -1028,6 +1060,7 @@ else{
 },  
 
 add_dash:function(event){
+
 var value = this.cnic;
 var arr = value.split('');
 var arr1 = [];
