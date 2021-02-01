@@ -257,55 +257,7 @@ v-model="date1"
     ></v-text-field>
     </v-flex>
 
-    <v-flex xs12 md12>
-    <v-radio-group v-model="public_figure"  row :rules="GroupByRequired">
-    <label>Public Figure</label>
-    <br>
-    <v-radio label="No" value="no" class="mx-3 r_label"></v-radio>
-    
-    <v-radio class="mx-3 r_label" label="Yes" value="yes"></v-radio>
-    </v-radio-group>
-    <v-label>(includes Senior Goverment Officials, Senior Office Bearers of Public Sector Entities, Politicians)</v-label>
-    </v-flex>
-
-    <v-flex xs12>
-    <v-radio-group v-model="refused_account_by_institute"  row :rules="GroupByRequired">
-    <label>Has any Financial Institution ever refused to open your account?</label>
-    <v-radio label="No" value="no" class="mx-3"></v-radio>
-    <v-radio label="Yes" value="yes" class="mx-3"></v-radio>
-    </v-radio-group>
-    </v-flex>
-    <v-flex xs12>
-    <v-text-field
-    v-if="refused_account_by_institute == 'yes'"
-    :rules="GroupByRequired"
-    label="Specify here"
-    v-model="other_refused_account_by_institute"
-    :value="Caps"
-    required
-    ></v-text-field>
-    </v-flex>
-
-
-    <v-flex xs12>
-    <v-radio-group v-model="high_value_item"  row :rules="GroupByRequired">
-    <label>Do you deal in high value items such as precious metal and real estate?</label>
-    <v-radio label="No" value="no" class="mx-3"></v-radio>
-    <v-radio label="Yes" value="yes" class="mx-3"></v-radio>
-
-    </v-radio-group>
-    </v-flex>
-    <v-flex xs12>
-    <v-text-field
-    v-if="high_value_item == 'yes'"
-    :rules="GroupByRequired"
-    label="Specify here"
-    :value="Caps"
-    v-model="other_high_value_item"
-    required
-    ></v-text-field>
-    </v-flex>
-
+  
   
          
     <v-flex xs6 md6>
@@ -396,8 +348,8 @@ v-model="date1"
     </v-flex>
     
     <v-flex xs12>
-    <div v-if="err" style="color: #ff1744 !important;">{{err}}</div>
-    <v-btn class="primary" :loading="loading" @click="submit">Continue</v-btn>
+    <!-- <div v-if="err" style="color: #ff1744 !important;">{{err}}</div> -->
+    <v-btn style="display:none;" class="primary" :loading="loading" @click="submit">Continue</v-btn>
     </v-flex>
 
 
@@ -902,6 +854,7 @@ this.zk_fileSize = this.zakat_certificate.size > 1000000 ? true : false
 this.valid4zakat_certificate = (this.zakat_certificate) ? false : true
 
 },
+
 
 submit(){
 
