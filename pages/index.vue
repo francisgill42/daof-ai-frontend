@@ -52,26 +52,28 @@
 
       <v-stepper-content step="1">
           <First class="mt-10"/> 
+          <v-btn class="primary" @click="e1 = 2">submit</v-btn>
       </v-stepper-content>
 
       <v-stepper-content step="2">
-          <First class="mt-10"/> 
+          <Second class="mt-10"/> 
+          <v-btn class="primary" @click="e1 = 5">submit</v-btn>
       </v-stepper-content>
 
        <v-stepper-content step="3">
-          <Register class="mt-10"/> 
+          <Third class="mt-10"/> 
+          <v-btn class="primary" @click="e1 = 4">submit</v-btn>
       </v-stepper-content>
 
       <v-stepper-content step="4">
-          <First class="mt-10"/> 
+          <Four class="mt-10"/> 
+          <v-btn class="primary" @click="e1 = 4">submit</v-btn>
       </v-stepper-content>
 
-       <v-stepper-content step="5">
-          <Register class="mt-10"/> 
-      </v-stepper-content>
-
-     
-
+        <v-stepper-content step="5">
+          <Fifth class="mt-10"/> 
+          <v-btn class="primary" @click="e1 = 5">submit</v-btn>
+       </v-stepper-content>
 
     </v-stepper-items>
   </v-stepper>
@@ -82,6 +84,9 @@
 <script>
 import Register from '~/components/Register'
 import First from '~/components/First'
+import Second from '~/components/Second'
+import Fifth from '~/components/Fifth'
+
 export default {
 
   layout : 'web',
@@ -94,7 +99,10 @@ export default {
 
   components : {
   
-    Register
+    Register,
+    First,
+    Second,
+    Fifth
   }
   
 }
