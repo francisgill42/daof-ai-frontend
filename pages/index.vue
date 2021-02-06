@@ -22,7 +22,7 @@
         :complete="e1 > 2"
         step="2"
       >
-        Investment Details
+        Risk Profile
       </v-stepper-step>
 
        <v-divider></v-divider>
@@ -57,7 +57,7 @@
 
       <v-stepper-content step="2">
           <Second class="mt-10"/> 
-          <v-btn class="primary" @click="e1 = 5">submit</v-btn>
+          <v-btn class="primary" @click="e1 = 3">submit</v-btn>
       </v-stepper-content>
 
        <v-stepper-content step="3">
@@ -66,14 +66,13 @@
       </v-stepper-content>
 
       <v-stepper-content step="4">
-          <Four class="mt-10"/> 
-          <v-btn class="primary" @click="e1 = 4">submit</v-btn>
+          <Fourth class="mt-10"/> 
+          <v-btn class="primary" @click="e1 = 5">submit</v-btn>
       </v-stepper-content>
 
         <v-stepper-content step="5">
           <Fifth class="mt-10"/> 
-          <v-btn class="primary" @click="e1 = 5">submit</v-btn>
-       </v-stepper-content>
+        </v-stepper-content>
 
     </v-stepper-items>
   </v-stepper>
@@ -85,6 +84,8 @@
 import Register from '~/components/Register'
 import First from '~/components/First'
 import Second from '~/components/Second'
+import Third from '~/components/Third'
+import Fourth from '~/components/Fourth'
 import Fifth from '~/components/Fifth'
 
 export default {
@@ -102,6 +103,8 @@ export default {
     Register,
     First,
     Second,
+    Third,
+    Fourth,
     Fifth
   }
   

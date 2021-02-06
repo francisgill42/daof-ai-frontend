@@ -32,7 +32,6 @@
    
    placeholder="dd/mm/yyyy"
    label="CNIC Issue Date"
-   readonly
    v-on="on"
    ></v-text-field>
    </template>
@@ -55,7 +54,6 @@ v-model="date2"
    
    placeholder="dd/mm/yyyy"
    label="CNIC Expiry Date"
-   readonly
    v-on="on"
    ></v-text-field>
    </template>
@@ -78,8 +76,6 @@ v-model="date2"
     clearable
     placeholder="dd/mm/yyyy"
     label="Date Of Birth"
-    
-    readonly
     v-on="on"
     ></v-text-field>
     </template>
@@ -185,11 +181,11 @@ v-model="date1"
    </v-flex>
 
    <v-flex xs12 md6>
-   <v-text-field readonly="true" class="red_class" v-model="whatsapp" label="WhatsApp No" :value="Caps"></v-text-field>
+   <v-text-field class="red_class" v-model="whatsapp" label="WhatsApp No" :value="Caps"></v-text-field>
    </v-flex>
 
     <v-flex xs12 md6>
-   <v-text-field readonly="true" class="red_class" v-model="email" label="Email" :value="Caps"></v-text-field>
+   <v-text-field class="red_class" v-model="email" label="Email" :value="Caps"></v-text-field>
    </v-flex>
     
     <v-flex xs12>
@@ -431,275 +427,8 @@ userScore : '',
 
 },
    created(){
-      this.getOccupation();
-      this.getAverageAnnualIncome();
-      this.getSourceOfIncome();
-      this.getMaritalStatus();
-
-      let xmls=`<?xml version="1.0" encoding="utf-8"?>
-      <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
-      <soap12:Body>
-      <GetCountry xmlns="http://tempuri.org/" />
-      </soap12:Body>
-      </soap12:Envelope>`;
-
-      axios.post('https://daofservice.hblasset.com/DigitalAccountOpenTillVerify.asmx?op=GetCountry',
-      xmls,
-      {headers:
-      {'Content-Type': 'text/xml'}
-      }).then(res=>{
-
-      var parser = new DOMParser();
-      var r = parser.parseFromString(res.data,'application/xml');
-
-      var countries = JSON.parse(r.getElementsByTagName('GetCountryResult')[0].textContent).Table;
-
-      countries.map((v => {
-         
-         var payload = {
-            CNT_OFFICALNAME : v.CNT_OFFICALNAME,
-            CNT_COUNTRYCODE : `${v.CNT_COUNTRYCODE}|${v.CNT_OFFICALNAME}`
-            };
-            this.countries.push(payload);
-
-      }));
-
-
-      }).catch(err=>{console.log(err)});
-
    },
 methods: {
-
-getMaritalStatus (){
-let xmls1=`<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <GetMaritalStatus xmlns="http://tempuri.org/" />
-  </soap:Body>
-</soap:Envelope>`;
-
-axios.post('https://daofservice.hblasset.com/DigitalAccountOpenTillVerify.asmx?op=GetMaritalStatus',
-xmls1,
-{headers:
-{'Content-Type': 'text/xml'}
-}).then(res=>{
-
-var parser = new DOMParser();
-var r = parser.parseFromString(res.data,'application/xml');
-
-var res = JSON.parse(r.getElementsByTagName('GetMaritalStatusResult')[0].textContent).Table;
-res.map((v => {
-         
-         var payload = {
-            GEN_NAME : v.GEN_NAME,
-            GEN_ID : `${v.GEN_ID}|${v.GEN_NAME}`
-            };
-            this.marital_list.push(payload);
-
-      }));
-
-
-}).catch(err=>{console.log(err)});
-
-},
-
-getSourceOfIncome(){
-let xmls1=`<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <GetSourceOfIncome xmlns="http://tempuri.org/" />
-  </soap:Body>
-</soap:Envelope>`;
-
-axios.post('https://daofservice.hblasset.com/DigitalAccountOpenTillVerify.asmx?op=GetSourceOfIncome',
-xmls1,
-{headers:
-{'Content-Type': 'text/xml'}
-}).then(res=>{
-
-var parser = new DOMParser();
-var r = parser.parseFromString(res.data,'application/xml');
-
-var res = JSON.parse(r.getElementsByTagName('GetSourceOfIncomeResult')[0].textContent).Table;
-res.map((v => {
-         
-         var payload = {
-            GEN_NAME : v.GEN_NAME,
-            GEN_ID : `${v.GEN_ID}|${v.GEN_NAME}`
-            };
-            this.sois.push(payload);
-
-      }));
-
-
-}).catch(err=>{console.log(err)});
-
-},
-getAverageAnnualIncome(){
-let xmls1=`<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <GetSalaryAnnualIncome xmlns="http://tempuri.org/" />
-  </soap:Body>
-</soap:Envelope>`;
-
-axios.post('https://daofservice.hblasset.com/DigitalAccountOpenTillVerify.asmx?op=GetSalaryAnnualIncome',
-xmls1,
-{headers:
-{'Content-Type': 'text/xml'}
-}).then(res=>{
-
-var parser = new DOMParser();
-var r = parser.parseFromString(res.data,'application/xml');
-
-var res = JSON.parse(r.getElementsByTagName('GetSalaryAnnualIncomeResult')[0].textContent).Table;
-res.map((v => {
-         
-         var payload = {
-            GEN_NAME : v.GEN_NAME,
-            GEN_ID : `${v.GEN_ID}|${v.GEN_NAME}`
-            };
-            this.average_annual_income_list.push(payload);
-
-      }));
-
-
-}).catch(err=>{console.log(err)});
-
-},
-
-getOccupation(){
-let xmls1=`<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <GetOccupation xmlns="http://tempuri.org/" />
-  </soap:Body>
-</soap:Envelope>`;
-
-axios.post('https://daofservice.hblasset.com/DigitalAccountOpenTillVerify.asmx?op=GetOccupation',
-xmls1,
-{headers:
-{'Content-Type': 'text/xml'}
-}).then(res=>{
-
-var parser = new DOMParser();
-var r = parser.parseFromString(res.data,'application/xml');
-var res = JSON.parse(r.getElementsByTagName('GetOccupationResult')[0].textContent).Table;
-
-
- res.map((v => {
-         
-         var payload = {
-            GEN_NAME : v.GEN_NAME,
-            GEN_ID : `${v.GEN_ID}|${v.GEN_NAME}`
-            };
-            this.occs.push(payload);
-
-      }));
-
-
-}).catch(err=>{console.log(err)});
-
-},
-getCityByCountry(prefix,country){
-let xmls1=`<?xml version="1.0" encoding="utf-8"?>
-<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
-<soap12:Body>
-<getCityCodeByCountryID xmlns="http://tempuri.org/">
-<CountryCode>${country.split('|')[0]}</CountryCode>
-</getCityCodeByCountryID>
-</soap12:Body>
-</soap12:Envelope>`;
-
-axios.post('https://daofservice.hblasset.com/DigitalAccountOpenTillVerify.asmx?op=getCityCodeByCountryID',
-xmls1,
-{headers:
-{'Content-Type': 'text/xml'}
-}).then(res=>{
-
-var parser = new DOMParser();
-var r = parser.parseFromString(res.data,'application/xml');
-var d = JSON.parse(r.getElementsByTagName('getCityCodeByCountryIDResult')[0].textContent).Table;
-var arr = [];
-     d.map((v => {
-         arr.push({
-            CTY_FULLNAME : v.CTY_FULLNAME,
-            CTY_CITYCODE: `${v.CTY_CITYCODE}|${v.CTY_FULLNAME}`
-         });
-      }));
-
-      prefix == 'pob' ? this.pob_cities_by_id = arr : this.resi_cities_by_id = arr;
-
-}).catch(err=>{console.log(err)});
-
-},
-
-change_zk_options (){
-   if(this.zakat == 'yes') {
-      this.zakat_options = ''
-      this.zakat_certificate = {name:''}
-   }   
-},   
-get_zi(){
-   this.zakat_options == 'file' ? this.zakat_certificate.name : this.zakat_certificate = 'UPLOAD CERTIFICATE' 
-},
-createImage(file) {
-var image = new Image();
-var reader = new FileReader();
-var vm = this;
-
-reader.onload = (e) => {
-vm.image = e.target.result;
-};
-reader.readAsDataURL(file);
-},
-removeImage: function (e) {
-this.image = '';
-},
-
-onPick_cnic_attachment () { 
-this.$refs.cnic_attachmentInput.click() 
-},
-
-check_cnic_attachment(e) {
-
-this.cnic_attachment = e.target.files[0] || '';
-
-this.cnic_fileSize = this.cnic_attachment.size > 1000000 ? true : false
-
-this.valid4cnic_attachment = (this.cnic_attachment) ? false : true 
-
-
-},
-
-onPick_soi_attachment () { 
-this.$refs.soi_attachmentInput.click() 
-},
-
-check_soi_attachment(e) { 
-
-this.soi_attachment = e.target.files[0] || '';
-
-this.soi_fileSize = this.soi_attachment.size > 1000000 ? true : false
-
-this.valid4soi_attachment = (this.soi_attachment) ? false : true 
-
-},
-
-onPick_zkt_attachment () { 
-this.$refs.zkt_attachmentInput.click() 
-},
-
-check_zakat_certificate(e){ 
-
-this.zakat_certificate = e.target.files[0] || '';
-
-this.zk_fileSize = this.zakat_certificate.size > 1000000 ? true : false
-
-this.valid4zakat_certificate = (this.zakat_certificate) ? false : true
-
-},
-
 
 submit(){
 

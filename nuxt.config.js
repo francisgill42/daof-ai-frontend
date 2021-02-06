@@ -61,7 +61,7 @@ export default {
       dark: false,
       themes: {
         light : {
-          primary : colors.orange
+          primary : '#e60000'
         },
         dark: {
           primary: colors.red.lighten1,
